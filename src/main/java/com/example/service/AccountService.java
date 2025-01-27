@@ -1,6 +1,9 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,21 +21,27 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Account register(Account account) {
-        
+    public Account register(Account account){
         return accountRepository.save(account);
 
     }
+    
+    public Optional login(String username, String password){
+        return accountRepository.findByUsernameAndPassword(username, password);
+    }
 
-    public boolean accountNameTaken(String accountName){
-        List<Account> allAccounts = accountRepository.findAll();
-        
-        for(Account all: allAccounts){
-            if(all.getUsername().equals(accountName)){
-                return true;
-            }
+    public boolean accountExists(Account account){
+        if(accountRepository.findByUsername(account.getUsername()).isEmpty()){
+            return false;
+        }
+        return true;
+    }
+    public boolean accountExistsById(Integer id){
+        if(accountRepository.findById(id).isPresent()){
+            return true;
         }
         return false;
     }
+  
 
 }
