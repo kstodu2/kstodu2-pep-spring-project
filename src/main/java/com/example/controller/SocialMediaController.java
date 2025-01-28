@@ -102,7 +102,7 @@ public class SocialMediaController {
             || message.getMessageText().length() > 255){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            messageService.deleteMessageById(message_id);
+            messageService.updateMessage(message_id, message.getMessageText());
             return ResponseEntity.status(HttpStatus.OK).body("1");
     }
 

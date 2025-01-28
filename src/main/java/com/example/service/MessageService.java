@@ -20,6 +20,7 @@ public class MessageService {
     public Message createNewMessage(Message message){
         return messageRepository.save(message);
     }
+
     public List<Message> getAllMessages(){
         return messageRepository.findAll();
     }
@@ -36,6 +37,14 @@ public class MessageService {
     }
     public List<Message> getAllMessagesFromAccountId(Integer id){
         return messageRepository.findBypostedBy(id);
+    }
+    
+    public void updateMessage(Integer id, String messageText){
+        Message message = messageRepository.findById(id).orElse(null);
+        if(message != null){
+            message.setMessageText(messageText);
+            messageRepository.save(message);
+        }
     }
 
 }
