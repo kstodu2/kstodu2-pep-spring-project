@@ -44,7 +44,7 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Account account){
 
         if(account.getUsername().isBlank() || (account.getPassword()).length() < 3){
@@ -57,7 +57,7 @@ public class SocialMediaController {
         return ResponseEntity.status(HttpStatus.OK).body("Sucessfully registered");
         
     }
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Account account){
         Optional<Account> accountLog = accountService.login(account.getUsername(), account.getPassword());
         if(accountLog.isPresent()){
@@ -66,7 +66,7 @@ public class SocialMediaController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials");
 
     }
-    @PostMapping("messages")
+    @PostMapping("/messages")
     public ResponseEntity<Object> messages(@RequestBody Message message){
         if(message.getMessageText().isBlank() 
         || message.getMessageText().length() > 255
@@ -76,25 +76,25 @@ public class SocialMediaController {
         messageService.createNewMessage(message);
         return new ResponseEntity<>(message,HttpStatus.OK);
     }
-    @GetMapping("messages")
-    public ResponseEntity<List> messages(){
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> messages(){
         List<Message> list = messageService.getAllMessages();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("messages/{message_id}")
+    @GetMapping("/messages/{message_id}")
     public ResponseEntity<Message> getMessageById(@PathVariable Integer message_id){
         Optional<Message> messageSearch = messageService.getMessageByMessageId(message_id);
         return new ResponseEntity<>(messageSearch.orElse(null), HttpStatus.OK);
     }
-    @DeleteMapping("messages/{message_id}")
+    @DeleteMapping("/messages/{message_id}")
     public ResponseEntity<String> deleteMessageById(@PathVariable Integer message_id){
         if(!messageService.deleteMessageById(message_id)){
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
         return new ResponseEntity<>("1", HttpStatus.OK);
     }
-    @PatchMapping("messages/{message_id}")
+    @PatchMapping("/messages/{message_id}")
     public ResponseEntity<String> updateMessage(@PathVariable Integer message_id, @RequestBody Message message){
 
         if(!messageService.getMessageByMessageId(message_id).isPresent() 
@@ -106,13 +106,9 @@ public class SocialMediaController {
             return ResponseEntity.status(HttpStatus.OK).body("1");
     }
 
-    @GetMapping("accounts/{account_id}/messages")
+    @GetMapping("/accounts/{account_id}/messages")
     public ResponseEntity<List<Message>> getAllMessagesFromAccountId(@PathVariable Integer account_id){
-
         List<Message> listOfMessages = messageService.getAllMessagesFromAccountId(account_id);
-
         return ResponseEntity.status(HttpStatus.OK).body(listOfMessages);
-        
     }
-
 }

@@ -14,7 +14,6 @@ import com.example.repository.AccountRepository;
 @Service
 public class AccountService {
 
-    @Autowired
     private AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository){
