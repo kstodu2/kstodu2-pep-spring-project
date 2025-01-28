@@ -26,7 +26,7 @@ public class AccountService {
 
     }
     
-    public Optional login(String username, String password){
+    public Optional<Account> login(String username, String password){
         return accountRepository.findByUsernameAndPassword(username, password);
     }
 

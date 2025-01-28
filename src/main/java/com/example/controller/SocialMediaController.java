@@ -59,7 +59,7 @@ public class SocialMediaController {
     }
     @PostMapping("login")
     public ResponseEntity<Object> login(@RequestBody Account account){
-        Optional accountLog = accountService.login(account.getUsername(), account.getPassword());
+        Optional<Account> accountLog = accountService.login(account.getUsername(), account.getPassword());
         if(accountLog.isPresent()){
             return new ResponseEntity<>(accountLog, HttpStatus.OK);
         }
